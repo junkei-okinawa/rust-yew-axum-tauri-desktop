@@ -4,6 +4,13 @@ use yew_hooks::prelude::*;
 
 use types::UserInfo;
 
+use material_yew::list::GraphicType;
+use material_yew::*;
+use material_yew::{
+    text_inputs::{TextFieldType, ValidityState},
+    MatTextField,
+};
+
 #[function_component(App)]
 fn app() -> Html {
     // Get backend port automatically from tauri command.
@@ -97,8 +104,86 @@ fn app() -> Html {
         })
     };
 
+    let validity_transform = MatTextField::validity_transform(move |_, _| {
+        let mut state = ValidityState::new();
+        state.set_valid(false).set_bad_input(true);
+        state
+    });
     html! {
-        <>
+    <>
+        <section class="demo">
+            <div class="demo-group-spaced">
+                <MatTextField label="Standard (always fails validity check)" validity_transform={validity_transform.clone()} />
+                <MatTextField label="Standard" icon="event" field_type={TextFieldType::Date} />
+                <MatTextField label="Standard" icon_trailing="delete" />
+            </div>
+        </section>
+        <hr />
+        <section class="demo">
+            <div class="demo-group-spaced">
+                <MatTextField label="Standard" helper="Helper Text" helper_persistent=true max_length=18 char_counter=true />
+                <MatTextField outlined=true label="Standard" helper="Helper Text" helper_persistent=true max_length=18 char_counter=true />
+                <span class="shaped-outlined">
+                    <MatTextField outlined=true label="Standard" helper="Helper Text" helper_persistent=true max_length=18 char_counter=true />
+                </span>
+            </div>
+        </section>
+        <hr />
+        <section>
+            <MatSelect label="Has Icon" outlined=true icon="event">
+                <MatListItem>{""}</MatListItem>
+                <MatListItem value="0" graphic={GraphicType::Icon}>{"Option 0"}</MatListItem>
+                <MatListItem value="1" graphic={GraphicType::Icon}>{"Option 1"}</MatListItem>
+                <MatListItem value="2" graphic={GraphicType::Icon}>{"Option 2"}</MatListItem>
+                <MatListItem value="3" graphic={GraphicType::Icon}>{"Option 3"}</MatListItem>
+            </MatSelect>
+        </section>
+        <hr />
+        <section class="demo">
+            <MatButton label="Click me!" raised=true/>
+            <MatButton label="Click me!" icon={AttrValue::from("code")} raised=true/>
+        </section>
+        <section class="demo">
+            <h3>{"Switch"}</h3>
+            <MatSwitch />
+        </section>
+        <section class="demo">
+            <MatRadio name="some name" />
+        </section>
+        <section class="demo">
+            <MatFab icon="edit" />
+        </section>
+        <MatCircularProgress indeterminate=true />
+        <section>
+            <div style="margin: 1em;">
+                <MatLinearProgress indeterminate=true />
+            </div>
+        </section>
+        <section class="demo">
+            <MatSlider />
+        </section>
+        <section class="demo">
+            <MatIcon>{"sentiment_very_dissatisfied"}</MatIcon>
+            <MatIcon>{"sentiment_dissatisfied"}</MatIcon>
+            <MatIcon>{"sentiment_very_dissatisfied"}</MatIcon>
+            <MatIcon>{"sentiment_very_dissatisfied"}</MatIcon>
+            <MatIcon>{"sentiment_very_dissatisfied"}</MatIcon>
+        </section>
+        <section>
+            <div class="demo">
+                <h3>{"Standard"}</h3>
+                <MatFormfield label="This is a checkbox">
+                    <MatCheckbox />
+                </MatFormfield>
+            </div>
+
+            <div class="demo">
+                <h3>{"Align End"}</h3>
+                <MatFormfield label="This is another checkbox" align_end=true>
+                    <MatCheckbox />
+                </MatFormfield>
+            </div>
+        </section>
             <p>
                 <button {onclick}>{ "Load backend api" }</button>
                 <button onclick={onclickserver}>{ "Load server api" }</button>
